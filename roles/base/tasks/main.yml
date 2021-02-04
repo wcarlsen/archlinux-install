@@ -27,6 +27,7 @@
       - shellcheck
       - yamllint
       - vagrant
+      - python-pre-commit
   become: yes
 
 - aur:
