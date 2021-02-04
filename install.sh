@@ -152,10 +152,12 @@ localization() {
 network_configuration() {
     echo "Network configuration"
     echo "$HOST_NAME" > /etc/hostname
-    echo "" >> /etc/hosts
-    echo "127.0.0.1     localhost" >> /etc/hosts
-    echo "::1           localhost" >> /etc/hosts
-    echo "127.0.1.1     ${HOST_NAME}.localdomain   ${HOST_NAME}" >> /etc/hosts
+    {
+        echo ""
+        echo "127.0.0.1     localhost"
+        echo "::1           localhost"
+        echo "127.0.1.1     ${HOST_NAME}.localdomain   ${HOST_NAME}"
+    } >> /etc/hosts
 }
 
 # Set root password
@@ -258,9 +260,11 @@ prepare_yay() {
 configure_ssh() {
     su - $USER -c "mkdir /home/$USER/.ssh"
     curl https://api.github.com/users/$GITHUB_USER/keys | jq --arg GITHUB_USER "$GITHUB_USER" '(.[].key + " " + $GITHUB_USER + "@github/" + (.[].id|tostring))' | tr -d '"' > /home/$USER/.ssh/authorized_keys
-    echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
-    echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config
-    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+    {
+        echo "PasswordAuthentication no"
+        echo "PubkeyAuthentication yes"
+        echo "PermitRootLogin no"
+    } >> /etc/ssh/sshd_config
 }
 
 # Enable services

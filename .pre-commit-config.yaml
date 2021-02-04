@@ -1,7 +1,19 @@
 ---
-- repo: git@github.com:Yelp/detect-secrets
-  rev: v0.14.3
-  hooks:
-  - id: detect-secrets
-    # args: ['--baseline', '.secrets.baseline']
-    # exclude: package.lock.json
+repos:
+  - repo: git@github.com:Yelp/detect-secrets
+    rev: v0.14.3
+    hooks:
+      - id: detect-secrets
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.1.0
+    hooks:
+      - id: trailing-whitespace
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: detect-aws-credentials
+      - id: detect-private-key
+      - id: check-yaml
+  - repo: git://github.com/detailyang/pre-commit-shell
+    rev: v1.0.6
+    hooks:
+      - id: shell-lint
