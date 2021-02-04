@@ -1,0 +1,8 @@
+---
+- name: Install dotnet
+  pacman:
+    state: present
+    name:
+      - dotnet-runtime
+      - dotnet-sdk
+  become: yes

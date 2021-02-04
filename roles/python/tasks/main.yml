@@ -1,0 +1,7 @@
+- name: Install Python tooling
+  pacman:
+    state: present
+    name:
+      - python
+      - python-pipenv
+  become: yes

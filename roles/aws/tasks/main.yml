@@ -1,0 +1,27 @@
+---
+- aur:
+    use: yay
+    state: present
+    name:
+      - aws-cli-v2-bin
+      - saml2aws-bin
+
+- name: Configure saml2aws
+  shell: |
+    saml2aws configure \
+    --url=https://adfs.dfds.com/adfs/ls/IdpInitiatedSignOn.aspx \
+    --idp-provider=ADFS \
+    --mfa=Auto \
+    --session-duration=28800 \
+    --skip-prompt
+
+- name: Create aws folder
+  file:
+    path: ~/.aws
+    state: directory
+
+- name: Copy aws config
+  copy:
+    src: ../templates/config
+    dest: ~/.aws/config
+    force: true

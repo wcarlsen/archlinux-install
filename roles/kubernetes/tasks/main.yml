@@ -1,0 +1,24 @@
+---
+- name: Create kube folder
+  file:
+    path: ~/.kube
+    state: directory
+
+- name: Install Kuberentes tooling
+  pacman:
+    state: present
+    name:
+      - k9s
+      - kubectl
+      - kubectx
+      - minikube
+      - helm
+  become: yes
+
+- aur:
+    use: yay
+    state: present
+    name:
+      - aws-iam-authenticator
+      - flux-bin
+      - kubelogin

@@ -1,0 +1,6 @@
+- name: Install Go tooling
+  pacman:
+    state: present
+    name:
+      - go
+  become: yes

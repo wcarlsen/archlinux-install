@@ -1,0 +1,14 @@
+- name: Install Terraform tooling
+  pacman:
+    state: present
+    name:
+      - terraform
+      - terragrunt
+  become: yes
+
+- aur:
+    use: yay
+    state: present
+    name:
+      - terraform-docs-bin
+      - tflint-bin

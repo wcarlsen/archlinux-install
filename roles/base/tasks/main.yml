@@ -1,0 +1,75 @@
+---
+- name: Install pacman base
+  pacman:
+    state: present
+    name:
+      - bat
+      - exa
+      - git
+      - github-cli
+      - jq
+      - hey
+      - vim
+      - the_silver_searcher
+      - thefuck
+      - tmux
+      - tree
+      - zsh
+      - stow
+      - pwgen
+      - wget
+      - fzf
+      - nmap
+      - dnsutils
+      - postgresql
+      - xclip
+      - wireguard-tools
+      - shellcheck
+      - yamllint
+      - vagrant
+  become: yes
+
+- aur:
+    use: yay
+    state: present
+    name:
+      - autojump-git
+      - tmuxinator
+
+- name: Check if oh-my-zsh is installed
+  stat:
+    path: ~/.oh-my-zsh
+  register: omz
+
+- name: Install oh-my-zsh
+  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  when: omz.stat.exists == False
+
+- name: Change shell to zsh
+  user:
+    name: "{{ ansible_user_id }}"
+    shell: /bin/zsh
+  become: yes
+
+- name: Create spaghetti folder
+  file:
+    path: ~/spaghetti
+    state: directory
+
+- name: Check if fzf-tab is installed
+  stat:
+    path: ~/.oh-my-zsh/custom/plugins/fzf-tab
+  register: fzftab
+
+- name: Install fzf-tab
+  shell: git clone https://github.com/Aloxaf/fzf-tab ~/.oh-my-zsh/custom/plugins/fzf-tab
+  when: fzftab.stat.exists == False
+
+- name: Check if zsh-autosuggestions is installed
+  stat:
+    path: ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  register: zshautosuggestions
+
+- name: Install zsh-autosuggestions
+  shell: git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  when: zshautosuggestions.stat.exists == False

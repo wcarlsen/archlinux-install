@@ -1,0 +1,15 @@
+---
+- name: Bootstrap system
+  hosts: all
+  roles:
+    - base
+    - apps
+    - aws
+    - docker
+    - kubernetes
+    - terraform
+    - python
+    - razer
+    - ansible
+    - golang
+    - dotnet

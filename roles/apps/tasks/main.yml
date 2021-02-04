@@ -1,0 +1,42 @@
+---
+- name: Enable multilib
+  shell: sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+  args:
+    warn: false
+  become: yes
+
+- name: Run the equivalent of "pacman -Syu" as a separate step
+  pacman:
+    update_cache: yes
+  become: yes
+
+- name: Install pacman apps
+  pacman:
+    state: present
+    name:
+      - firefox
+      - chromium
+      - transmission-gtk
+      - virtualbox
+      - kitty
+      - flameshot
+      - dbeaver
+      - chromium
+      - discord
+      - steam
+      - peek
+  become: yes
+
+- aur:
+    use: yay
+    state: present
+    name:
+      - insomnia-bin
+      - slack-desktop
+      - visual-studio-code-bin
+      - teams
+      - spotify
+      - timeshift
+      - dropbox
+      - balena-etcher
+

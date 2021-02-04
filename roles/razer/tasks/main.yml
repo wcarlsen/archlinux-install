@@ -1,0 +1,20 @@
+- name: Install razercfg
+  pacman:
+    state: present
+    name:
+      - razercfg
+  become: yes
+
+- name: Copy razer config
+  copy:
+    src: ../templates/razer.conf
+    dest: /etc/razer.conf
+    force: true
+  become: yes
+
+- name: Enable and start razerd service
+  systemd:
+    name: razerd.service
+    state: started
+    enabled: yes
+  become: yes

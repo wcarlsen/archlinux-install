@@ -1,0 +1,16 @@
+---
+- name: Install Ansible tooling
+  pacman:
+    state: present
+    name:
+      - ansible
+      - molecule-docker
+      - sshpass
+  become: yes
+
+- aur:
+    use: yay
+    state: present
+    name:
+      - ansible-aur-git
+

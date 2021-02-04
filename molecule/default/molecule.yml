@@ -1,0 +1,25 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+# lint: |
+#   set -e
+#   yamllint .
+#   ansible-lint
+platforms:
+  - name: instance
+    image: archlinux
+    command: ""
+    dockerfile: 'Dockerfile'
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    pre_build_image: false
+    privileged: true
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
