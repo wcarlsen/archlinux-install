@@ -8,3 +8,4 @@ gsettings set org.gnome.desktop.interface show-battery-percentage true
 gsettings set org.gnome.desktop.calendar show-weekdate true
 gsettings set org.gnome.desktop.interface clock-show-weekday true
 gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
+gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'firefox.desktop', 'spotify.desktop', 'org.gnome.Terminal.desktop', 'visual-studio-code.desktop', 'slack.desktop', 'discord.desktop', 'dbeaver.desktop', 'insomnia.desktop', 'com.uploadedlobster.peek.desktop', 'transmission-gtk.desktop', 'steam.desktop']"
