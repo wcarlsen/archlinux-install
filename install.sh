@@ -11,7 +11,7 @@ PASSWD="So Much Secret" # pragma: allowlist secret
 USER="wcarlsen"
 GITHUB_USER="wcarlsen" # user for ssh config
 TIMEZONE="Europe/Copenhagen"
-POST_INSTALL=true
+# POST_INSTALL=true
 # DESKTOP="gnome"
 
 # Main setup
@@ -43,7 +43,7 @@ chrootsetup() {
     prepare_yay
     configure_ssh
     enable_services
-    ansible_post_install
+    # ansible_post_install
     exit 0
 }
 
@@ -261,7 +261,7 @@ prepare_yay() {
 # Ssh
 configure_ssh() {
     echo "Setting up ssh with github key"
-    su - $USER -c "mkdir /home/$USER/.ssh"
+    su - $USER -c "mkdir /home/$USER/.ssh && touch /home/$USER/.ssh/authorized_keys"
     curl https://api.github.com/users/$GITHUB_USER/keys | jq --arg GITHUB_USER "$GITHUB_USER" '(.[].key + " " + $GITHUB_USER + "@github/" + (.[].id|tostring))' | tr -d '"' > /home/$USER/.ssh/authorized_keys
     {
         echo "PasswordAuthentication no"
@@ -280,19 +280,19 @@ enable_services() {
 }
 
 # Post install
-ansible_post_install() {
-    echo "Post install"
-    if [[ $POST_INSTALL ]]; then
-        pacman -S ansible --noconfirm
-        echo "$USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/11-install-$USER # pragma: allowlist secret
-        visudo -cf /etc/sudoers.d/11-install-$USER
-        su - $USER -c "yay -S ansible-aur-git --noconfirm"
-        su - $USER -c "ansible-pull -U https://github.com/wcarlsen/archlinux-install -i localhost, local.yml"
-        rm /etc/sudoers.d/11-install-$USER
-    else
-        echo 'Skipping post install'
-    fi
-}
+# ansible_post_install() {
+#     echo "Post install"
+#     if [[ $POST_INSTALL ]]; then
+#         pacman -S ansible --noconfirm
+#         echo "$USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/11-install-$USER # pragma: allowlist secret
+#         visudo -cf /etc/sudoers.d/11-install-$USER
+#         su - $USER -c "yay -S ansible-aur-git --noconfirm"
+#         su - $USER -c "ansible-pull -U https://github.com/wcarlsen/archlinux-install -i localhost, local.yml"
+#         rm /etc/sudoers.d/11-install-$USER
+#     else
+#         echo 'Skipping post install'
+#     fi
+# }
 
 if [[ $1 == setupchroot ]]; then
     chrootsetup
