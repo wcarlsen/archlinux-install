@@ -1,6 +1,6 @@
 ---
 - name: Bootstrap system
-  hosts: all
+  hosts: workstations
   roles:
     - base
     - apps
@@ -13,3 +13,4 @@
     - ansible
     - golang
     - dotnet
+    - gnome

@@ -11,6 +11,7 @@
   systemd:
     name: docker.service
     enabled: yes
+    state: started
   become: yes
 
 - name: Add the user to docker group
