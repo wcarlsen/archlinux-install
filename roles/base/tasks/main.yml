@@ -28,6 +28,8 @@
       - yamllint
       - vagrant
       - python-pre-commit
+      - htop
+      - bash-bats
   become: yes
 
 - aur:
@@ -36,6 +38,7 @@
     name:
       - autojump-git
       - tmuxinator
+      - direnv
 
 - name: Check if oh-my-zsh is installed
   stat:

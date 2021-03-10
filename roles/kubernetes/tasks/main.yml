@@ -20,5 +20,6 @@
     state: present
     name:
       - aws-iam-authenticator
-      - flux-bin
       - kubelogin
+      # - velero-bin
+      # - flux-bin

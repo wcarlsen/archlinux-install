@@ -11,8 +11,7 @@ PASSWD="So Much Secret" # pragma: allowlist secret
 USER="wcarlsen"
 GITHUB_USER="wcarlsen" # user for ssh config
 TIMEZONE="Europe/Copenhagen"
-# POST_INSTALL=true
-# DESKTOP="gnome"
+DESKTOP="gnome"
 
 # Main setup
 setup() {
@@ -119,7 +118,7 @@ mount_file_system() {
 install_base() {
     echo "Install base"
     # Pacstrap
-    pacstrap /mnt base linux linux-firmware vim intel-ucode lvm2
+    pacstrap /mnt base linux linux-firmware intel-ucode lvm2
 
     # Generate filesystem table
     genfstab -U /mnt >> /mnt/etc/fstab
@@ -228,24 +227,24 @@ video_driver() {
 # Desktop
 install_desktop() {
     echo "Install desktop and display server"
-    # if [[ $DESKTOP == "gnome" ]]; then
-    pacman -Sy --noconfirm xorg gnome gnome-tweaks
-    systemctl enable gdm
-    # elif [[ $DESKTOP == "kde" ]]; then
-    #     pacman -Sy --noconfirm plasma kde-applications sddm
-    #     systemctl enable sddm
-    # elif [[ $DESKTOP == "dwm" ]]; then
-    #     pacman -Sy --noconfirm xorg xorg-xinit dmenu
-    #     su - $USER -c "git clone git://git.suckless.org/dwm /home/$USER/suckless/dwm"
-    #     su - $USER -c "git clone git://git.suckless.org/st /home/$USER/suckless/st"
-    #     su - $USER -c "git clone git://git.suckless.org/slock /home/$USER/suckless/slock"
-    #     su - $USER -c "make -C /home/$USER/suckless/dwm/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/dwm/ clean install"
-    #     su - $USER -c "make -C /home/$USER/suckless/st/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/st/ clean install"
-    #     su - $USER -c "make -C /home/$USER/suckless/slock/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/slock/ clean install"
-    #     su - $USER -c "echo 'setxkbmap dk; exec dwm' > /home/$USER/.xinitrc"
-    # else
-    #     echo 'No valid desktop specified'
-    # fi
+    if [[ $DESKTOP == "gnome" ]]; then
+        pacman -Sy --noconfirm xorg gnome gnome-tweaks
+        systemctl enable gdm
+    elif [[ $DESKTOP == "kde" ]]; then
+        pacman -Sy --noconfirm plasma kde-applications sddm
+        systemctl enable sddm
+    elif [[ $DESKTOP == "dwm" ]]; then
+        pacman -Sy --noconfirm xorg xorg-xinit dmenu
+        su - $USER -c "git clone git://git.suckless.org/dwm /home/$USER/suckless/dwm"
+        su - $USER -c "git clone git://git.suckless.org/st /home/$USER/suckless/st"
+        su - $USER -c "git clone git://git.suckless.org/slock /home/$USER/suckless/slock"
+        su - $USER -c "make -C /home/$USER/suckless/dwm/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/dwm/ clean install"
+        su - $USER -c "make -C /home/$USER/suckless/st/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/st/ clean install"
+        su - $USER -c "make -C /home/$USER/suckless/slock/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/slock/ clean install"
+        su - $USER -c "echo 'setxkbmap dk; exec dwm' > /home/$USER/.xinitrc"
+    else
+        echo 'No valid desktop specified'
+    fi
 }
 
 # Yay
@@ -278,21 +277,6 @@ enable_services() {
     systemctl enable cups.service
     systemctl enable sshd
 }
-
-# Post install
-# ansible_post_install() {
-#     echo "Post install"
-#     if [[ $POST_INSTALL ]]; then
-#         pacman -S ansible --noconfirm
-#         echo "$USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/11-install-$USER # pragma: allowlist secret
-#         visudo -cf /etc/sudoers.d/11-install-$USER
-#         su - $USER -c "yay -S ansible-aur-git --noconfirm"
-#         su - $USER -c "ansible-pull -U https://github.com/wcarlsen/archlinux-install -i localhost, local.yml"
-#         rm /etc/sudoers.d/11-install-$USER
-#     else
-#         echo 'Skipping post install'
-#     fi
-# }
 
 if [[ $1 == setupchroot ]]; then
     chrootsetup

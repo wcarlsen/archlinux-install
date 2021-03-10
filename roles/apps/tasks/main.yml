@@ -31,12 +31,12 @@
     use: yay
     state: present
     name:
+      - firefox-nightly
       - insomnia-bin
       - slack-desktop
       - visual-studio-code-bin
-      - teams
       - spotify
       - timeshift
       - dropbox
       - balena-etcher
-
+      # - teams
