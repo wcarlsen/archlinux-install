@@ -14,14 +14,13 @@
   pacman:
     state: present
     name:
-      - firefox
+      # - firefox
       - chromium
-      - transmission-gtk
+      - transmission-qt
       - virtualbox
       - kitty
       - flameshot
       - dbeaver
-      - chromium
       - discord
       - steam
       - peek
@@ -38,5 +37,5 @@
       - spotify
       - timeshift
       - dropbox
-      - balena-etcher
+      # - balena-etcher
       # - teams

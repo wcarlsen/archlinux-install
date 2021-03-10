@@ -13,4 +13,3 @@
     state: present
     name:
       - ansible-aur-git
-
