@@ -59,6 +59,8 @@ visudo -cf /etc/sudoers.d/11-install-YOUR_USERNAME # Validate change
 
 # Use ansible-pull to apply playbooks
 ansible-pull -U https://github.com/wcarlsen/archlinux-install -i localhost, local.yml --ask-become
+# or for remote
+ansible-playbook local.yml --ask-become # but remember to put your target ip in /etc/ansible/hosts under [workstations]
 
 # Enable pacman password prompt
 sudo rm /etc/sudoers.d/11-install-YOUR_USERNAME
