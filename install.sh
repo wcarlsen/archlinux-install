@@ -251,6 +251,7 @@ prepare_yay() {
     echo "$USER ALL=(ALL) NOPASSWD: /usr/bin/pacman" > /etc/sudoers.d/11-install-$USER
     visudo -cf /etc/sudoers.d/11-install-$USER
     su - wcarlsen -c "(cd /home/$USER/yay && makepkg -si --noconfirm)"
+    rm -rf /home/$USER/yay
     rm /etc/sudoers.d/11-install-$USER
 }
 
