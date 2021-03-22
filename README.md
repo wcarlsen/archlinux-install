@@ -68,5 +68,4 @@ sudo rm /etc/sudoers.d/11-install-YOUR_USERNAME
 
 ## TODO
 
-- [] Script Gnome settings (using "dconf watch /" might help)
 - [] Setup xorg as default Gnome session
