@@ -16,7 +16,7 @@
     name:
       # - firefox
       - chromium
-      - transmission-qt
+      - transmission-gtk
       - virtualbox
       - kitty
       - flameshot
@@ -37,5 +37,4 @@
       - spotify
       - timeshift
       - dropbox
-      # - balena-etcher
       # - teams

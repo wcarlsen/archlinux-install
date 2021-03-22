@@ -30,6 +30,7 @@
       - python-pre-commit
       - htop
       - bash-bats
+      - npm
   become: yes
 
 - aur:
@@ -39,6 +40,8 @@
       - autojump-git
       - tmuxinator
       - direnv
+      - ventoy-bin
+      - nerd-fonts-cascadia-code
 
 - name: Check if oh-my-zsh is installed
   stat:

@@ -230,9 +230,6 @@ install_desktop() {
     if [[ $DESKTOP == "gnome" ]]; then
         pacman -Sy --noconfirm xorg gnome gnome-tweaks
         systemctl enable gdm
-    elif [[ $DESKTOP == "kde" ]]; then
-        pacman -Sy --noconfirm plasma kde-applications sddm
-        systemctl enable sddm
     elif [[ $DESKTOP == "dwm" ]]; then
         pacman -Sy --noconfirm xorg xorg-xinit dmenu
         su - $USER -c "git clone git://git.suckless.org/dwm /home/$USER/suckless/dwm"
