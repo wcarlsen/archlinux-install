@@ -238,7 +238,7 @@ install_desktop() {
         su - $USER -c "make -C /home/$USER/suckless/dwm/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/dwm/ clean install"
         su - $USER -c "make -C /home/$USER/suckless/st/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/st/ clean install"
         su - $USER -c "make -C /home/$USER/suckless/slock/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/slock/ clean install"
-        su - $USER -c "echo 'setxkbmap dk; exec dwm' > /home/$USER/.xinitrc"
+        su - $USER -c "echo 'setxkbmap $KEYMAP; exec dwm' > /home/$USER/.xinitrc"
     else
         echo 'No valid desktop specified'
     fi
