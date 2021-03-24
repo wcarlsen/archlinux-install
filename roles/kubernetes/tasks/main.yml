@@ -13,6 +13,7 @@
       - kubectx
       - minikube
       - helm
+      - kustomize
   become: yes
 
 - aur:

@@ -41,7 +41,7 @@
       - tmuxinator
       - direnv
       - ventoy-bin
-      - nerd-fonts-cascadia-code
+      - nerd-fonts-jetbrains-mono 
 
 - name: Check if oh-my-zsh is installed
   stat:

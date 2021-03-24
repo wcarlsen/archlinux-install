@@ -43,6 +43,7 @@ chrootsetup() {
     configure_ssh
     enable_services
     # ansible_post_install
+    rm /root/install.sh
     exit 0
 }
 
