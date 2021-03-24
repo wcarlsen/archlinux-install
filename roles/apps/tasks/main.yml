@@ -14,7 +14,7 @@
   pacman:
     state: present
     name:
-      # - firefox
+      - firefox
       - chromium
       - transmission-gtk
       - virtualbox
@@ -30,7 +30,7 @@
     use: yay
     state: present
     name:
-      - firefox-nightly
+      # - firefox-nightly
       - insomnia-bin
       - slack-desktop
       - visual-studio-code-bin
