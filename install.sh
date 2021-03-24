@@ -260,7 +260,7 @@ prepare_yay() {
 configure_ssh() {
     echo "Setting up ssh with github key"
     su - $USER -c "mkdir /home/$USER/.ssh && touch /home/$USER/.ssh/authorized_keys"
-    curl https://api.github.com/users/$GITHUB_USER/keys | jq --arg GITHUB_USER "$GITHUB_USER" '(.[].key + " " + $GITHUB_USER + "@github/" + (.[].id|tostring))' | tr -d '"' > /home/$USER/.ssh/authorized_keys
+    curl https://api.github.com/users/$GITHUB_USER/keys | jq --arg GITHUB_USER "$GITHUB_USER" '(.[] | .key + " " + $GITHUB_USER + "@github/" + (.id|tostring))' | tr -d '"' > /home/$USER/.ssh/authorized_keys
     {
         echo "PasswordAuthentication no"
         echo "PubkeyAuthentication yes"
