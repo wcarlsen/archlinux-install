@@ -13,4 +13,4 @@
     - ansible
     - golang
     - dotnet
-    # - gnome
+    - gnome
