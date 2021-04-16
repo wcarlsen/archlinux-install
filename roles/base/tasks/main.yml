@@ -9,7 +9,6 @@
       - github-cli
       - jq
       - hey
-      - vim
       - the_silver_searcher
       - thefuck
       - tmux
@@ -24,6 +23,7 @@
       - postgresql
       - xclip
       - wireguard-tools
+      - systemd-resolvconf
       - shellcheck
       - yamllint
       - vagrant
@@ -31,6 +31,7 @@
       - htop
       - bash-bats
       - npm
+      - diff-so-fancy
   become: yes
 
 - aur:
@@ -42,6 +43,7 @@
       - direnv
       - ventoy-bin
       - nerd-fonts-jetbrains-mono 
+      - neovim-nightly-bin
 
 - name: Check if oh-my-zsh is installed
   stat:
@@ -80,3 +82,10 @@
 - name: Install zsh-autosuggestions
   shell: git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
   when: zshautosuggestions.stat.exists == False
+
+- name: Enable system-resolve
+  systemd:
+    name: system-resolve.service
+    enabled: yes
+    state: started
+  become: yes
