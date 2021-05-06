@@ -24,17 +24,17 @@
       - discord
       - steam
       - peek
+      - piper
   become: yes
 
 - aur:
     use: yay
     state: present
     name:
-      # - firefox-nightly
       - insomnia-bin
       - slack-desktop
       - visual-studio-code-bin
       - spotify
       - timeshift
       - dropbox
-      # - teams
+      - teams

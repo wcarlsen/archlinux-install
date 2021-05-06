@@ -14,6 +14,7 @@
       - minikube
       - helm
       - kustomize
+      - argocd
   become: yes
 
 - aur:
