@@ -23,6 +23,7 @@
       - postgresql
       - xclip
       - wireguard-tools
+      - systemd-resolvconf
       - shellcheck
       - yamllint
       - vagrant
@@ -84,3 +85,10 @@
 
 # - name: Install pynvim (requirement for Neovim plugins)
 #   shell: pip3 install --user pynvim
+
+- name: Enable system-resolve
+  systemd:
+    name: system-resolve.service
+    enabled: yes
+    state: started
+  become: yes
