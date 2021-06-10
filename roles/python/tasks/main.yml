@@ -5,4 +5,5 @@
       - python
       - python-pipenv
       - python-poetry
+      - pycharm-community-edition
   become: yes
