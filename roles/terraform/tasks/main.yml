@@ -4,7 +4,6 @@
     name:
       - terraform
       - terragrunt
-      - intellij-idea-community-edition
   become: yes
 
 - aur:
