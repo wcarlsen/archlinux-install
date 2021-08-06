@@ -42,7 +42,7 @@
       - tmuxinator
       - direnv
       - ventoy-bin
-      - nerd-fonts-jetbrains-mono 
+      - nerd-fonts-jetbrains-mono
       - neovim-nightly-bin
 
 - name: Check if oh-my-zsh is installed
@@ -86,9 +86,9 @@
 # - name: Install pynvim (requirement for Neovim plugins)
 #   shell: pip3 install --user pynvim
 
-- name: Enable system-resolve
+- name: Enable system-resolved
   systemd:
-    name: system-resolve.service
+    name: systemd-resolved.service
     enabled: yes
     state: started
   become: yes

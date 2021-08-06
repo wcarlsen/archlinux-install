@@ -14,27 +14,28 @@
   pacman:
     state: present
     name:
-      - firefox
       - chromium
-      - transmission-gtk
-      - virtualbox
-      - kitty
-      - flameshot
+      - copyq
       - dbeaver
       - discord
-      - steam
+      - firefox
+      - flameshot
+      - kitty
       - peek
       - piper
+      - steam
+      - transmission-gtk
+      - virtualbox
   become: yes
 
 - aur:
     use: yay
     state: present
     name:
+      - dropbox
       - insomnia-bin
       - slack-desktop
-      - visual-studio-code-bin
       - spotify
-      - timeshift
-      - dropbox
       - teams
+      - timeshift
+      - visual-studio-code-bin
