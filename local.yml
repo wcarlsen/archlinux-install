@@ -2,6 +2,7 @@
 - name: Bootstrap system
   hosts: workstations
   roles:
+    - aur-user
     - base
     - apps
     - aws
@@ -13,3 +14,4 @@
     - golang
     - dotnet
     - gnome
+    # - surface

@@ -8,7 +8,8 @@
       - sshpass
   become: yes
 
-- aur:
+- name: Install ansible-aur
+  aur:
     use: yay
     state: present
     name:

@@ -32,6 +32,7 @@
       - bash-bats
       - npm
       - diff-so-fancy
+      - archlinux-wallpaper
   become: yes
 
 - aur:
