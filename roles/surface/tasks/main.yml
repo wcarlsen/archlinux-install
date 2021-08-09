@@ -1,0 +1,51 @@
+---
+- name: Import keys
+  shell: |
+    curl -s https://raw.githubusercontent.com/linux-surface/linux-surface/master/pkg/keys/surface.asc \
+    | pacman-key --add -
+  become: yes
+
+- name: Verify fingerprint and sign it
+  shell: |
+    pacman-key --finger 56C464BAAC421453
+    pacman-key --lsign-key 56C464BAAC421453
+  become: yes
+
+- name: Add repository
+  blockinfile:
+    path: /etc/pacman.conf
+    block: |
+      [linux-surface]
+      Server = https://pkg.surfacelinux.com/arch/
+  become: yes
+
+
+- name: Install surface packages
+  pacman:
+    state: present
+    update_cache: yes
+    name:
+      - linux-surface
+      - linux-surface-headers
+      - iptsd
+      - iio-sensor-proxy
+  become: yes
+
+- name: Install libwacom
+  aur:
+    use: yay
+    state: present
+    name:
+      - libwacom-surface
+
+- name: Enable iptsd
+  systemd:
+    name: iptsd.service
+    enabled: yes
+    state: started
+  become: yes
+
+- name: Add repository
+  shell: |
+    grub-mkconfig -o /boot/grub/grub.cfg
+  become: yes
