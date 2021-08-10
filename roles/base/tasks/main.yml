@@ -33,6 +33,8 @@
       - npm
       - diff-so-fancy
       - archlinux-wallpaper
+      - minio-client
+      - yq
   become: yes
 
 - aur:
