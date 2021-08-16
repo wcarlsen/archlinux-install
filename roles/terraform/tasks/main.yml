@@ -12,3 +12,4 @@
     name:
       - terraform-docs-bin
       - tflint-bin
+      - k2tf

@@ -47,6 +47,7 @@
       - ventoy-bin
       - nerd-fonts-jetbrains-mono
       - neovim-nightly-bin
+      - sync-ssh-keys-bin
 
 - name: Check if oh-my-zsh is installed
   stat:
