@@ -35,6 +35,7 @@
       - archlinux-wallpaper
       - minio-client
       - yq
+      - tig
   become: yes
 
 - aur:
