@@ -49,6 +49,7 @@
       - nerd-fonts-jetbrains-mono
       - neovim-nightly-bin
       - sync-ssh-keys-bin
+      - mcfly
 
 - name: Check if oh-my-zsh is installed
   stat:
