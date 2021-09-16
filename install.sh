@@ -57,7 +57,7 @@ system_clock() {
 create_mirrorlist() {
     echo "Creating mirrorlist"
     pacman -Syy --noconfirm python reflector
-    reflector -c $COUNTRY -a 6 --sort rate --save /etc/pacman.d/mirrorlist
+    reflector -c $COUNTRY --protocol https -a 6 --sort rate --save /etc/pacman.d/mirrorlist
     pacman -Syyy
 }
 
@@ -243,6 +243,9 @@ install_desktop() {
         su - $USER -c "make -C /home/$USER/suckless/st/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/st/ clean install"
         su - $USER -c "make -C /home/$USER/suckless/slock/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/slock/ clean install"
         su - $USER -c "echo 'setxkbmap $KEYMAP; exec dwm' > /home/$USER/.xinitrc"
+    elif [[ $DESKTOP == "exwm" ]]; then
+        pacman -Sy --noconfirm xorg xorg-xinit emacs
+        su - $USER -c "echo 'setxkbmap $KEYMAP; exec emacs' > /home/$USER/.xinitrc"
     else
         echo 'No valid desktop specified'
     fi
@@ -264,6 +267,8 @@ configure_ssh() {
     echo "Setting up ssh with github key"
     su - $USER -c "mkdir /home/$USER/.ssh && touch /home/$USER/.ssh/authorized_keys"
     curl https://api.github.com/users/$GITHUB_USER/keys | jq --arg GITHUB_USER "$GITHUB_USER" '(.[] | .key + " " + $GITHUB_USER + "@github/" + (.id|tostring))' | tr -d '"' > /home/$USER/.ssh/authorized_keys
+    chown $USER:$USER /home/$USER/.ssh/authorized_keys
+    chmod 0600 /home/$USER/.ssh/authorized_keys
     {
         echo "PasswordAuthentication no"
         echo "PubkeyAuthentication yes"
