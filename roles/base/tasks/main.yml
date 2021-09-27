@@ -36,6 +36,7 @@
       - minio-client
       - yq
       - tig
+      - icdiff
   become: yes
 
 - aur:
