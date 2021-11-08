@@ -36,7 +36,7 @@
       - minio-client
       - yq
       - tig
-      - icdiff
+      - weechat
   become: yes
 
 - aur:
@@ -51,6 +51,7 @@
       - neovim-nightly-bin
       - sync-ssh-keys-bin
       - mcfly
+      - icdiff
 
 - name: Check if oh-my-zsh is installed
   stat:

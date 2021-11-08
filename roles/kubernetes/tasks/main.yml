@@ -23,5 +23,6 @@
     name:
       - aws-iam-authenticator-bin
       - kubelogin
-      # - velero-bin
-      # - flux-bin
+      - vcluster-bin
+      - velero-bin
+      - flux-bin

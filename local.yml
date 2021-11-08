@@ -2,7 +2,7 @@
 - name: Bootstrap system
   hosts: workstations
   roles:
-    - aur-user
+    - enable-aur
     - base
     - apps
     - aws
