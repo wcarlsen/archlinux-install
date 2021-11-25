@@ -12,6 +12,7 @@ USER="wcarlsen"
 GITHUB_USER="wcarlsen" # user for ssh config
 TIMEZONE="Europe/Copenhagen"
 DESKTOP="gnome"
+ENABLE_ENCRYPTION=true
 
 # Main setup
 setup() {
@@ -80,16 +81,23 @@ partition_disk() {
 
 # Encrypt main partition
 encrypt_main_partition() {
-    echo "Encrypt main partition"
-    echo -n "${PASSWD}" | cryptsetup luksFormat "$MAIN_PARTITION" -
-    echo -n "${PASSWD}" | cryptsetup open "$MAIN_PARTITION" cryptlvm -
+    if [[ $ENABLE_ENCRYPTION == true ]]; then
+        echo "Encrypt main partition"
+        echo -n "${PASSWD}" | cryptsetup luksFormat "$MAIN_PARTITION" -
+        echo -n "${PASSWD}" | cryptsetup open "$MAIN_PARTITION" cryptlvm -
+    fi
 }
 
 # Create physical and logical volumes
 create_volumes() {
     echo "Create volumes"
-    pvcreate /dev/mapper/cryptlvm
-    vgcreate vg1 /dev/mapper/cryptlvm
+    if [[ $ENABLE_ENCRYPTION == true ]]; then
+        pvcreate /dev/mapper/cryptlvm
+        vgcreate vg1 /dev/mapper/cryptlvm
+    else
+        pvcreate "$MAIN_PARTITION"
+        vgcreate vg1 "$MAIN_PARTITION"
+    fi
     lvcreate -L 40G vg1 -n root
     lvcreate -L 2G vg1 -n swap
     lvcreate -l 100%FREE vg1 -n home
@@ -184,7 +192,11 @@ initramfs() {
         if [[ "$i" == "autodetect" ]]; then
             HOOK="$i keymap"
         elif [[ "$i" == "filesystems" ]]; then
-            HOOK="encrypt lvm2 $i"
+            if [[ $ENABLE_ENCRYPTION == true ]]; then
+                HOOK="encrypt lvm2 $i"
+            else
+                HOOK="lvm2 $i"
+            fi
         else
             HOOK="$i"
         fi
@@ -204,7 +216,9 @@ bootloader() {
     MAIN_PARTITION=$(fdisk -l $DISK | grep 'LVM' | awk '{print $1}')
     MAIN_PARTITION_UUID=$(blkid | grep "$MAIN_PARTITION" | awk '{print $2}')
     GRUB_CMD="cryptdevice=${MAIN_PARTITION_UUID}:cryptlvm root=\/dev\/vg1\/root"
-    sed -i "s/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX=\"${GRUB_CMD}\"/g" /etc/default/grub
+    if [[ $ENABLE_ENCRYPTION == true ]]; then
+        sed -i "s/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX=\"${GRUB_CMD}\"/g" /etc/default/grub
+    fi
     grub-mkconfig -o /boot/grub/grub.cfg
 }
 
@@ -228,27 +242,33 @@ video_driver() {
 # Desktop
 install_desktop() {
     echo "Install desktop and display server"
-    if [[ $DESKTOP == "gnome" ]]; then
-        pacman -Sy --noconfirm xorg gnome gnome-tweaks
-        systemctl enable gdm
-    elif [[ $DEKSTOP == "kde" ]]; then
-        pacman -Sy --noconfirm plasma kde-applications sddm
-        systemctl enable sddm
-    elif [[ $DESKTOP == "dwm" ]]; then
-        pacman -Sy --noconfirm xorg xorg-xinit dmenu
-        su - $USER -c "git clone git://git.suckless.org/dwm /home/$USER/suckless/dwm"
-        su - $USER -c "git clone git://git.suckless.org/st /home/$USER/suckless/st"
-        su - $USER -c "git clone git://git.suckless.org/slock /home/$USER/suckless/slock"
-        su - $USER -c "make -C /home/$USER/suckless/dwm/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/dwm/ clean install"
-        su - $USER -c "make -C /home/$USER/suckless/st/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/st/ clean install"
-        su - $USER -c "make -C /home/$USER/suckless/slock/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/slock/ clean install"
-        su - $USER -c "echo 'setxkbmap $KEYMAP; exec dwm' > /home/$USER/.xinitrc"
-    elif [[ $DESKTOP == "exwm" ]]; then
-        pacman -Sy --noconfirm xorg xorg-xinit emacs
-        su - $USER -c "echo 'setxkbmap $KEYMAP; exec emacs' > /home/$USER/.xinitrc"
-    else
-        echo 'No valid desktop specified'
-    fi
+    case $DESKTOP in
+        "gnome")
+            pacman -Sy --noconfirm xorg gnome gnome-tweaks
+            systemctl enable gdm
+            ;;
+        "kde")
+            pacman -Sy --noconfirm plasma kde-applications sddm
+            systemctl enable sddm
+            ;;
+        "dwm")
+            pacman -Sy --noconfirm xorg xorg-xinit dmenu
+            su - $USER -c "git clone git://git.suckless.org/dwm /home/$USER/suckless/dwm"
+            su - $USER -c "git clone git://git.suckless.org/st /home/$USER/suckless/st"
+            su - $USER -c "git clone git://git.suckless.org/slock /home/$USER/suckless/slock"
+            su - $USER -c "make -C /home/$USER/suckless/dwm/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/dwm/ clean install"
+            su - $USER -c "make -C /home/$USER/suckless/st/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/st/ clean install"
+            su - $USER -c "make -C /home/$USER/suckless/slock/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/slock/ clean install"
+            su - $USER -c "echo 'setxkbmap $KEYMAP; exec dwm' > /home/$USER/.xinitrc"
+            ;;
+        "exwm")
+            pacman -Sy --noconfirm xorg xorg-xinit emacs
+            su - $USER -c "echo 'setxkbmap $KEYMAP; exec emacs' > /home/$USER/.xinitrc"
+            ;;
+        *)
+            echo 'No valid desktop specified'
+            ;;
+    esac
 }
 
 # Yay

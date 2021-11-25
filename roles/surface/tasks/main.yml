@@ -31,6 +31,14 @@
       - iio-sensor-proxy
   become: yes
 
+- name: Remove conflicting libwacom
+  pacman:
+    state: absent
+    update_cache: yes
+    name:
+      - libawacom
+  become: yes
+
 - name: Install libwacom
   aur:
     use: yay
