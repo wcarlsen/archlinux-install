@@ -33,7 +33,8 @@
 
 - name: Remove conflicting libwacom
   pacman:
-    state: absent
+    state: removed
+    force: yes
     update_cache: yes
     name:
       - libawacom

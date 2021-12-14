@@ -13,6 +13,6 @@
     - ansible
     - golang
     - dotnet
-    - gnome
+    # - gnome
     - kafka
     # - surface

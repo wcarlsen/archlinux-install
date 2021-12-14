@@ -37,13 +37,14 @@
       - yq
       - tig
       - weechat
+      - archiso
   become: yes
 
 - aur:
     use: yay
     state: present
     name:
-      - autojump-git
+      - autojump
       - tmuxinator
       - direnv
       - ventoy-bin

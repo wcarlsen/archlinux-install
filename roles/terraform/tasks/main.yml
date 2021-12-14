@@ -13,3 +13,4 @@
       - terraform-docs-bin
       - tflint-bin
       - tfk8s
+      - tfsec-bin
