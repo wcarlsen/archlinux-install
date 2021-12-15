@@ -1,14 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
-set -exo
+set -exo pipefail
 
 # Configuration
-# DISK="/dev/nvme0n1"
-DISK="/dev/$(lsblk -x SIZE | tail -n 1 | awk '{ print $1 }')"
+DISK="/dev/nvme0n1"
 COUNTRY="Denmark"
 KEYMAP="dk"
 HOST_NAME="archlinux"
-PASSWD="12345" # pragma: allowlist secret
+PASSWD="So Much Secret" # pragma: allowlist secret
 USER="wcarlsen"
 GITHUB_USER="wcarlsen" # user for ssh config
 TIMEZONE="Europe/Copenhagen"
@@ -66,33 +65,33 @@ create_mirrorlist() {
 # Zap disk
 zap_disk() {
     echo "Zapping disk ${DISK}"
-    sgdisk --zap-all "$DISK"
+    sgdisk --zap-all $DISK
 }
 
 # Parition disk
 partition_disk() {
     echo "Partion disk ${DISK}"
-    sgdisk -n 0:0:+260M -t 0:ef00 "$DISK"
-    sgdisk -n 0:0:0 -t 0:8e00 "$DISK"
+    sgdisk -n 0:0:+260M -t 0:ef00 $DISK
+    sgdisk -n 0:0:0 -t 0:8e00 $DISK
 
-    UEFI_PARTITION=$(fdisk -l "$DISK" | grep 'EFI' | awk '{print $1}')
-    MAIN_PARTITION=$(fdisk -l "$DISK" | grep 'LVM' | awk '{print $1}')
+    UEFI_PARTITION=$(fdisk -l $DISK | grep 'EFI' | awk '{print $1}')
+    MAIN_PARTITION=$(fdisk -l $DISK | grep 'LVM' | awk '{print $1}')
 }
 
 
 # Encrypt main partition
 encrypt_main_partition() {
-    if [ $ENABLE_ENCRYPTION = true ]; then
+    if [[ $ENABLE_ENCRYPTION == true ]]; then
         echo "Encrypt main partition"
-        echo "${PASSWD}" | cryptsetup luksFormat "$MAIN_PARTITION" -
-        echo "${PASSWD}" | cryptsetup open "$MAIN_PARTITION" cryptlvm -
+        echo -n "${PASSWD}" | cryptsetup luksFormat "$MAIN_PARTITION" -
+        echo -n "${PASSWD}" | cryptsetup open "$MAIN_PARTITION" cryptlvm -
     fi
 }
 
 # Create physical and logical volumes
 create_volumes() {
     echo "Create volumes"
-    if [ $ENABLE_ENCRYPTION = true ]; then
+    if [[ $ENABLE_ENCRYPTION == true ]]; then
         pvcreate /dev/mapper/cryptlvm
         vgcreate vg1 /dev/mapper/cryptlvm
     else
@@ -174,7 +173,7 @@ network_configuration() {
 # Set root password
 set_root_passwd() {
     echo "Set root password"
-    echo "root:${PASSWD}" | chpasswd
+    echo -n "root:${PASSWD}" | chpasswd
 }
 
 # Install packages
@@ -190,10 +189,10 @@ initramfs() {
     MOD_HOOKS=""
     for i in $HOOKS
     do
-        if [ "$i" = "autodetect" ]; then
+        if [[ "$i" == "autodetect" ]]; then
             HOOK="$i keymap"
-        elif [ "$i" = "filesystems" ]; then
-            if [ $ENABLE_ENCRYPTION = true ]; then
+        elif [[ "$i" == "filesystems" ]]; then
+            if [[ $ENABLE_ENCRYPTION == true ]]; then
                 HOOK="encrypt lvm2 $i"
             else
                 HOOK="lvm2 $i"
@@ -203,7 +202,7 @@ initramfs() {
         fi
         MOD_HOOKS="${MOD_HOOKS} ${HOOK}"
     done
-    MOD_HOOKS="${MOD_HOOKS}${HOOK} "
+    MOD_HOOKS=${MOD_HOOKS:1}
 
     sed -i "s/^HOOKS=(.*/${MOD_HOOKS}/g" /etc/mkinitcpio.conf
 
@@ -214,10 +213,10 @@ initramfs() {
 bootloader() {
     echo "Install bootloader"
     grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-    MAIN_PARTITION=$(fdisk -l "$DISK" | grep 'LVM' | awk '{print $1}')
+    MAIN_PARTITION=$(fdisk -l $DISK | grep 'LVM' | awk '{print $1}')
     MAIN_PARTITION_UUID=$(blkid | grep "$MAIN_PARTITION" | awk '{print $2}')
     GRUB_CMD="cryptdevice=${MAIN_PARTITION_UUID}:cryptlvm root=\/dev\/vg1\/root"
-    if [ $ENABLE_ENCRYPTION = true ]; then
+    if [[ $ENABLE_ENCRYPTION == true ]]; then
         sed -i "s/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX=\"${GRUB_CMD}\"/g" /etc/default/grub
     fi
     grub-mkconfig -o /boot/grub/grub.cfg
@@ -227,7 +226,7 @@ bootloader() {
 add_user() {
     echo "Add user"
     useradd -mG wheel $USER
-    echo "${USER}:${PASSWD}" | chpasswd
+    echo -n "${USER}:${PASSWD}" | chpasswd
     sed -i "s/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/" /etc/sudoers
 }
 
@@ -257,11 +256,9 @@ install_desktop() {
             su - $USER -c "git clone git://git.suckless.org/dwm /home/$USER/suckless/dwm"
             su - $USER -c "git clone git://git.suckless.org/st /home/$USER/suckless/st"
             su - $USER -c "git clone git://git.suckless.org/slock /home/$USER/suckless/slock"
-            # su - $USER -c "git clone https://github.com/torrinfail/dwmblocks.git /home/$USER/suckless/dwmblocks"
             su - $USER -c "make -C /home/$USER/suckless/dwm/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/dwm/ clean install"
             su - $USER -c "make -C /home/$USER/suckless/st/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/st/ clean install"
             su - $USER -c "make -C /home/$USER/suckless/slock/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/slock/ clean install"
-            # su - $USER -c "make -C /home/$USER/suckless/dwmblocks/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/dwmblocks/ clean install"
             su - $USER -c "echo 'setxkbmap $KEYMAP; exec dwm' > /home/$USER/.xinitrc"
             ;;
         "exwm")
@@ -282,7 +279,7 @@ prepare_yay() {
     visudo -cf /etc/sudoers.d/11-install-$USER
     su - wcarlsen -c "(cd /home/$USER/yay && makepkg -si --noconfirm)"
     rm -rf /home/$USER/yay
-    # rm /etc/sudoers.d/11-install-$USER
+    rm /etc/sudoers.d/11-install-$USER
 }
 
 # Ssh
@@ -309,7 +306,7 @@ enable_services() {
     systemctl enable tlp.service
 }
 
-if [ "$1" = setupchroot ]; then
+if [[ $1 == setupchroot ]]; then
     chrootsetup
 else
     setup
