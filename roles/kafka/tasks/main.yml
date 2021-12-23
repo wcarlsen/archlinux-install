@@ -3,5 +3,5 @@
     use: yay
     state: present
     name:
-      - kafka
-      - kcat-cli
+      # - kafka
+      - kaf
