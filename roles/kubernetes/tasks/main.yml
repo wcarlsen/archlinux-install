@@ -15,6 +15,7 @@
       - helm
       - kustomize
       - argocd
+      - kubeseal
   become: yes
 
 - aur:
@@ -26,3 +27,8 @@
       - vcluster-bin
       - velero-bin
       - flux-bin
+
+- name: Install crossplane cli
+  shell: curl -sL https://raw.githubusercontent.com/crossplane/crossplane/release-1.5/install.sh | sh
+
+# sudo mv kubectl-crossplane /usr/bin
