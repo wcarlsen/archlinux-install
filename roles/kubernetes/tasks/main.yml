@@ -22,13 +22,13 @@
     use: yay
     state: present
     name:
-      - aws-iam-authenticator-bin
       - kubelogin
       - vcluster-bin
       - velero-bin
       - flux-bin
+      - devspace-bin
 
-- name: Install crossplane cli
-  shell: curl -sL https://raw.githubusercontent.com/crossplane/crossplane/release-1.5/install.sh | sh
+# - name: Install crossplane cli
+#   shell: curl -sL https://raw.githubusercontent.com/crossplane/crossplane/release-1.5/install.sh | sh
 
 # sudo mv kubectl-crossplane /usr/bin

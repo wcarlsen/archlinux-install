@@ -36,8 +36,7 @@
       - minio-client
       - yq
       - tig
-      - weechat
-      - archiso
+      - tldr
   become: yes
 
 - aur:
