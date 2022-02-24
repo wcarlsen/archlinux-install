@@ -11,7 +11,7 @@ PASSWD="So Much Secret" # pragma: allowlist secret
 USER="wcarlsen"
 GITHUB_USER="wcarlsen" # user for ssh config
 TIMEZONE="Europe/Copenhagen"
-DESKTOP="gnome"
+DESKTOP=""
 ENABLE_ENCRYPTION=true
 
 # Main setup
@@ -179,7 +179,7 @@ set_root_passwd() {
 # Install packages
 install_packages() {
     echo "Install packages"
-    pacman -Sy --noconfirm grub efibootmgr networkmanager network-manager-applet wireless_tools wpa_supplicant dialog mtools dosfstools base-devel linux-headers git reflector bluez bluez-utils pulseaudio-bluetooth cups xdg-utils xdg-user-dirs jq openssh tlp
+    pacman -Sy --noconfirm grub efibootmgr networkmanager network-manager-applet wireless_tools wpa_supplicant dialog base-devel linux-headers git reflector bluez bluez-utils pulseaudio-bluetooth cups xdg-utils xdg-user-dirs jq openssh tlp zsh
 }
 
 # Initramfs
@@ -279,7 +279,7 @@ prepare_yay() {
     visudo -cf /etc/sudoers.d/11-install-$USER
     su - wcarlsen -c "(cd /home/$USER/yay && makepkg -si --noconfirm)"
     rm -rf /home/$USER/yay
-    rm /etc/sudoers.d/11-install-$USER
+    # rm /etc/sudoers.d/11-install-$USER
 }
 
 # Ssh
