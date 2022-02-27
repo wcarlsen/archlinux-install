@@ -227,7 +227,7 @@ add_user() {
     echo "Add user"
     useradd -mG wheel $USER
     echo -n "${USER}:${PASSWD}" | chpasswd
-    sed -i "s/^# %wheel ALL=(ALL) ALL/%wheel ALL=(ALL) ALL/" /etc/sudoers
+    sed -i "s/^# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/" /etc/sudoers
 }
 
 # Video driver
