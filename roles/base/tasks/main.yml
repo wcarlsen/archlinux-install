@@ -29,7 +29,6 @@
       - vagrant
       - python-pre-commit
       - htop
-      - bash-bats
       - npm
       - diff-so-fancy
       - archlinux-wallpaper
@@ -37,6 +36,7 @@
       - yq
       - tig
       - tldr
+      - neovim
   become: yes
 
 - aur:
@@ -48,7 +48,6 @@
       - direnv
       - ventoy-bin
       - nerd-fonts-jetbrains-mono
-      - neovim-nightly-bin
       - sync-ssh-keys-bin
       - mcfly
       - icdiff
@@ -90,9 +89,6 @@
 - name: Install zsh-autosuggestions
   shell: git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
   when: zshautosuggestions.stat.exists == False
-
-# - name: Install pynvim (requirement for Neovim plugins)
-#   shell: pip3 install --user pynvim
 
 - name: Enable system-resolved
   systemd:

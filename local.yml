@@ -2,7 +2,7 @@
 - name: Bootstrap system
   hosts: workstations
   roles:
-    - enable-aur
+    # - enable-aur
     - base
     - apps
     - aws
@@ -13,6 +13,6 @@
     - ansible
     - golang
     - dotnet
-    - gnome
+    # - gnome
     - kafka
     # - surface
