@@ -265,6 +265,13 @@ install_desktop() {
             pacman -Sy --noconfirm xorg xorg-xinit emacs
             su - $USER -c "echo 'setxkbmap $KEYMAP; exec emacs' > /home/$USER/.xinitrc"
             ;;
+        "pantheon")
+            pacman -Sy --noconfirm pantheon pantheon-session \
+              pantheon-geoclue2-agent pantheon-polkit-agent pantheon-print pantheon-settings-daemon \
+              lightdm-pantheon-greeter pantheon-default-settings \
+              elementary-icon-theme elementary-wallpapers gtk-theme-elementary ttf-droid ttf-opensans ttf-roboto sound-theme-elementary \
+              switchboard
+            ;;
         *)
             echo 'No valid desktop specified'
             ;;
