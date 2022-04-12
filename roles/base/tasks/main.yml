@@ -37,6 +37,7 @@
       - tig
       - tldr
       - neovim
+      - net-tools
   become: yes
 
 - aur:
