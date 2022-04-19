@@ -38,6 +38,8 @@
       - tldr
       - neovim
       - net-tools
+      - man-db
+      - man-pages
   become: yes
 
 - aur:
@@ -49,6 +51,7 @@
       - direnv
       - ventoy-bin
       - nerd-fonts-jetbrains-mono
+      - nerd-fonts-fantasque-sans-mono
       - sync-ssh-keys-bin
       - mcfly
       - icdiff
