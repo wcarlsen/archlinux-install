@@ -16,6 +16,7 @@
       - kustomize
       - argocd
       - kubeseal
+      - operator-sdk
   become: yes
 
 - aur:
