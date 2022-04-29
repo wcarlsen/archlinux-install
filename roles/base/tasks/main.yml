@@ -40,6 +40,7 @@
       - net-tools
       - man-db
       - man-pages
+      - ncdu
   become: yes
 
 - aur:
