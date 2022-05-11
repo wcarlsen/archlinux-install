@@ -41,6 +41,7 @@
       - man-db
       - man-pages
       - ncdu
+      - zoxide
   become: yes
 
 - aur:
