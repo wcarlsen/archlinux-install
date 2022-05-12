@@ -253,9 +253,9 @@ install_desktop() {
             ;;
         "dwm")
             pacman -Sy --noconfirm xorg xorg-xinit dmenu
-            su - $USER -c "git clone git://git.suckless.org/dwm /home/$USER/suckless/dwm"
-            su - $USER -c "git clone git://git.suckless.org/st /home/$USER/suckless/st"
-            su - $USER -c "git clone git://git.suckless.org/slock /home/$USER/suckless/slock"
+            su - $USER -c "git clone https://git.suckless.org/dwm /home/$USER/suckless/dwm"
+            su - $USER -c "git clone https://git.suckless.org/st /home/$USER/suckless/st"
+            su - $USER -c "git clone https://git.suckless.org/slock /home/$USER/suckless/slock"
             su - $USER -c "make -C /home/$USER/suckless/dwm/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/dwm/ clean install"
             su - $USER -c "make -C /home/$USER/suckless/st/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/st/ clean install"
             su - $USER -c "make -C /home/$USER/suckless/slock/ && echo $PASSWD | sudo -S make -C /home/$USER/suckless/slock/ clean install"
