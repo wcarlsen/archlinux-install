@@ -42,6 +42,7 @@
       - man-pages
       - ncdu
       - zoxide
+      - xsv
   become: yes
 
 - aur:
