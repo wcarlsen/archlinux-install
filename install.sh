@@ -179,7 +179,7 @@ set_root_passwd() {
 # Install packages
 install_packages() {
     echo "Install packages"
-    pacman -Sy --noconfirm grub efibootmgr networkmanager network-manager-applet wireless_tools wpa_supplicant dialog base-devel linux-headers git reflector bluez bluez-utils pulseaudio-bluetooth cups xdg-utils xdg-user-dirs jq openssh tlp zsh
+    pacman -Sy --noconfirm grub efibootmgr networkmanager network-manager-applet wireless_tools wpa_supplicant dialog base-devel linux-headers git reflector bluez bluez-utils pulseaudio-bluetooth cups xdg-utils xdg-user-dirs jq openssh tlp zsh ufw
 }
 
 # Initramfs
@@ -311,6 +311,7 @@ enable_services() {
     systemctl enable cups.service
     systemctl enable sshd
     systemctl enable tlp.service
+    systemctl enable ufw.service
 }
 
 if [[ $1 == setupchroot ]]; then
